@@ -1,0 +1,17 @@
+{
+  "name": "universal-translator-app",
+  "version": "1.0.0",
+  "description": "Electron application for managing locale files",
+  "main": "./main.prod.js",
+  "author": {
+    "name": "Try Again Apps",
+    "email": "try.again.apps@gmail.com",
+    "url": "https://github.com/try-again-apps"
+  },
+  "scripts": {
+    "electron-rebuild": "node -r babel-register ../internals/scripts/ElectronRebuild.js",
+    "postinstall": "npm run electron-rebuild"
+  },
+  "license": "MIT",
+  "dependencies": {}
+}
