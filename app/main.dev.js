@@ -58,7 +58,7 @@ const openModalDirectory = event => {
   openDirectory({ mainWindow, event });
 };
 
-ipcMain.on(IpcChannels.OPEN_DIRECTORY, openModalDirectory);
+ipcMain.on(IpcChannels.OPEN_DIRECTORY_DIALOG, openModalDirectory);
 ipcMain.on(IpcChannels.SAVE_MODULE, saveModule);
 
 app.on('ready', async () => {

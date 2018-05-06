@@ -4,7 +4,6 @@ import { ipcRenderer } from 'electron';
 import { connect } from 'react-redux';
 import RaisedButton from 'material-ui/RaisedButton';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 import { AddItem } from 'renderer/components';
 import { IpcChannels } from 'common/consts/dialogs';
@@ -17,7 +16,7 @@ import {
 // import ModulesList from './ModulesList';
 // import Search from './Search';
 
-class Home extends React.PureComponent {
+class HomeView extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -47,7 +46,7 @@ class Home extends React.PureComponent {
     this.props.directoryOpened(data);
   };
 
-  openFile = () => ipcRenderer.send(IpcChannels.OPEN_DIRECTORY);
+  openFile = () => ipcRenderer.send(IpcChannels.OPEN_DIRECTORY_DIALOG);
 
   onSaveModule = (name, data) => {
     const { modules } = this.props;
@@ -70,38 +69,36 @@ class Home extends React.PureComponent {
     const dataLoaded = !modules.get('data').isEmpty();
     const changed = !modules.getIn(['meta', 'changed']).isEmpty();
     return (
-      <MuiThemeProvider>
-        <div className="items-container">
-          <div className="buttons">
-            <RaisedButton onClick={this.openFile} label="Open directory" />
-            <RaisedButton
-              onClick={this.saveAllChangedFiles}
-              disabled={!dataLoaded || !changed}
-              label="Save All"
-            />
-            <RaisedButton
-              disabled={!dataLoaded}
-              onClick={this.showAddItem}
-              label="Add new"
-            />
-          </div>
-          {showAddItem && (
-            <AddItem
-              onAdd={this.onAddItem}
-              onCancel={this.hideAddItem}
-              defaultModule={this.state.moduleName}
-            />
-          )}
-          {/* <Search />
-          <ModulesList /> */}
-          {/* <ModuleViewer languages={['en', 'pl']} title="test" files={files.toJS()} /> */}
+      <div className="items-container">
+        <div className="buttons">
+          <RaisedButton onClick={this.openFile} label="Open directory" />
+          <RaisedButton
+            onClick={this.saveAllChangedFiles}
+            disabled={!dataLoaded || !changed}
+            label="Save All"
+          />
+          <RaisedButton
+            disabled={!dataLoaded}
+            onClick={this.showAddItem}
+            label="Add new"
+          />
         </div>
-      </MuiThemeProvider>
+        {showAddItem && (
+          <AddItem
+            onAdd={this.onAddItem}
+            onCancel={this.hideAddItem}
+            defaultModule={this.state.moduleName}
+          />
+        )}
+        {/* <Search />
+        <ModulesList /> */}
+        {/* <ModuleViewer languages={['en', 'pl']} title="test" files={files.toJS()} /> */}
+      </div>
     );
   }
 }
 
-Home.propTypes = {
+HomeView.propTypes = {
   directoryOpened: PropTypes.func.isRequired,
   modules: ImmutablePropTypes.map.isRequired,
 
@@ -117,4 +114,4 @@ export default connect(mapStateToProps, {
   allSaved,
   addLocale,
   directoryOpened
-})(Home);
+})(HomeView);

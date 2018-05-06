@@ -1,4 +1,5 @@
 import { combineReducers } from 'redux-immutable';
+
 import router from './routerReducer';
 import modules from './modules';
 

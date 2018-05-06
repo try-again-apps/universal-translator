@@ -4,6 +4,9 @@ import { AppContainer } from 'react-hot-loader';
 import Immutable from 'immutable';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'react-router-redux';
+import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
 
 import { configureStore, history } from './renderer/store/configureStore';
 import './app.global.scss';
@@ -16,7 +19,9 @@ render(
   <AppContainer>
     <Provider store={store}>
       <ConnectedRouter history={history}>
-        <Routes />
+        <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
+          <Routes />
+        </MuiThemeProvider>
       </ConnectedRouter>
     </Provider>
   </AppContainer>,

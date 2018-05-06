@@ -1,0 +1,33 @@
+.welcome-view {
+  display: flex;
+  height: 100vh;
+  align-items: center;
+  justify-content: center;
+
+  & .container {
+    display: flex;
+    flex-direction: column;
+
+    & .title-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-family: 'Roboto';
+
+      & .title {
+        display: flex;
+        align-items: center;
+        font-weight: 100;
+        font-size: 40px;
+  
+        & > :not(:last-child) {
+          margin-right: 16px;
+        }
+      }
+    }
+
+    & > :not(:last-child) {
+      margin-bottom: 16px;
+    }
+  }  
+}
