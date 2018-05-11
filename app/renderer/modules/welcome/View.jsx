@@ -1,11 +1,16 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import RaisedButton from 'material-ui/RaisedButton';
+import { connect } from 'react-redux';
 import { ipcRenderer } from 'electron';
 import FolderOpenIcon from 'material-ui/svg-icons/file/folder-open';
 import SettingsIcon from 'material-ui/svg-icons/action/settings';
 import AppIcon from 'material-ui/svg-icons/action/translate';
+import { Link } from 'react-router-dom';
+import LinearProgress from 'material-ui/LinearProgress';
 
 import { IpcChannels } from 'common/consts/dialogs';
+import { directoryOpened } from 'renderer/reducers/modules';
 
 import { version } from '../../../../package.json';
 
@@ -14,9 +19,33 @@ const styles = {
 };
 
 class WelcomeView extends React.PureComponent {
-  openDirectory = () => ipcRenderer.send(IpcChannels.OPEN_DIRECTORY_DIALOG);
+  state = {
+    busy: false
+  };
+
+  componentDidMount() {
+    ipcRenderer.once(
+      IpcChannels.OPEN_DIRECTORY_DIALOG_RESULT,
+      this.directoryOpened
+    );
+  }
+
+  openDirectory = () => {
+    ipcRenderer.send(IpcChannels.OPEN_DIRECTORY_DIALOG_REQUEST);
+    this.setState({ busy: true });
+  };
+
+  directoryOpened = (event, data) => {
+    const { history } = this.props;
+    this.props.directoryOpened(data);
+    setTimeout(() => {
+      this.setState({ busy: false });
+      history.push('/home');
+    }, 1500);
+  };
 
   render() {
+    const { busy } = this.state;
     return (
       <div className="welcome-view">
         <div className="container">
@@ -27,15 +56,22 @@ class WelcomeView extends React.PureComponent {
             </div>
             <div>v. {version}</div>
           </div>
+          {busy && (
+            <div>
+              <LinearProgress mode="indeterminate" />
+            </div>
+          )}
           <RaisedButton
-            onClick={this.openDirectory}
-            label="Open directory"
+            disabled={busy}
             icon={<FolderOpenIcon />}
+            label="Open directory"
+            onClick={this.openDirectory}
           />
           <RaisedButton
-            onClick={this.openDirectory}
-            label="Settings"
+            containerElement={<Link to="/settings" />}
+            disabled={busy}
             icon={<SettingsIcon />}
+            label="Settings"
           />
         </div>
       </div>
@@ -43,4 +79,10 @@ class WelcomeView extends React.PureComponent {
   }
 }
 
-export default WelcomeView;
+WelcomeView.propTypes = {
+  history: PropTypes.object.isRequired,
+
+  directoryOpened: PropTypes.func.isRequired
+};
+
+export default connect(null, { directoryOpened })(WelcomeView);

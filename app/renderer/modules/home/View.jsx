@@ -2,17 +2,16 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { ipcRenderer } from 'electron';
 import { connect } from 'react-redux';
+import IconButton from 'material-ui/IconButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import ImmutablePropTypes from 'react-immutable-proptypes';
+import AddBoxIcon from 'material-ui/svg-icons/content/add-box';
+import SaveIcon from 'material-ui/svg-icons/content/save';
+import CloseIcon from 'material-ui/svg-icons/navigation/close';
 
 import { AddItem } from 'renderer/components';
 import { IpcChannels } from 'common/consts/dialogs';
-import {
-  allSaved,
-  addLocale,
-  getModules,
-  directoryOpened
-} from 'renderer/reducers/modules';
+import { allSaved, addLocale, getModules } from 'renderer/reducers/modules';
 // import ModulesList from './ModulesList';
 // import Search from './Search';
 
@@ -25,13 +24,10 @@ class HomeView extends React.PureComponent {
     };
   }
 
-  componentDidMount() {
-    ipcRenderer.on(IpcChannels.OPEN_DIRECTORY_RESULT, this.directoryOpened);
-  }
-
-  componentWillUnmount() {
-    ipcRenderer.removeListener(IpcChannels.OPEN_DIRECTORY_RESULT);
-  }
+  closeView = () => {
+    const { history } = this.props;
+    history.push('/');
+  };
 
   hideAddItem = () => this.setState({ showAddItem: false });
   showAddItem = () => this.setState({ showAddItem: true });
@@ -41,12 +37,6 @@ class HomeView extends React.PureComponent {
     // this.setState({ moduleName: name });
     this.hideAddItem();
   };
-
-  directoryOpened = (event, data) => {
-    this.props.directoryOpened(data);
-  };
-
-  openFile = () => ipcRenderer.send(IpcChannels.OPEN_DIRECTORY_DIALOG);
 
   onSaveModule = (name, data) => {
     const { modules } = this.props;
@@ -71,17 +61,21 @@ class HomeView extends React.PureComponent {
     return (
       <div className="items-container">
         <div className="buttons">
-          <RaisedButton onClick={this.openFile} label="Open directory" />
           <RaisedButton
-            onClick={this.saveAllChangedFiles}
             disabled={!dataLoaded || !changed}
-            label="Save All"
+            icon={<SaveIcon />}
+            label="Save Changes"
+            onClick={this.saveAllChangedFiles}
           />
           <RaisedButton
             disabled={!dataLoaded}
+            icon={<AddBoxIcon />}
+            label="Add"
             onClick={this.showAddItem}
-            label="Add new"
           />
+          <IconButton onClick={this.closeView}>
+            <CloseIcon />
+          </IconButton>
         </div>
         {showAddItem && (
           <AddItem
@@ -99,7 +93,7 @@ class HomeView extends React.PureComponent {
 }
 
 HomeView.propTypes = {
-  directoryOpened: PropTypes.func.isRequired,
+  history: PropTypes.object.isRequired,
   modules: ImmutablePropTypes.map.isRequired,
 
   addLocale: PropTypes.func.isRequired,
@@ -112,6 +106,5 @@ const mapStateToProps = state => ({
 
 export default connect(mapStateToProps, {
   allSaved,
-  addLocale,
-  directoryOpened
+  addLocale
 })(HomeView);

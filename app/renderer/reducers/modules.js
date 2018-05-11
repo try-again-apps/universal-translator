@@ -14,7 +14,7 @@ export const updateLocale = params =>
   createAction(ActionTypes.LOCALE_UPDATE, { ...params });
 export const allSaved = () => createAction(ActionTypes.LOCALE_ALL_SAVED);
 export const directoryOpened = data =>
-  createAction(IpcChannels.OPEN_DIRECTORY_RESULT, data);
+  createAction(IpcChannels.OPEN_DIRECTORY_DIALOG_RESULT, data);
 
 export const getModules = state => state.get('modules');
 export const getModulesData = state => getModules(state).get('data');
@@ -95,7 +95,7 @@ const updateLocaleState = (
 
 const data = (state = Immutable.Map(), action) => {
   switch (action.type) {
-    case IpcChannels.OPEN_DIRECTORY_RESULT:
+    case IpcChannels.OPEN_DIRECTORY_DIALOG_RESULT:
       return Immutable.fromJS(action.payload.data);
     case ActionTypes.LOCALE_ADD:
       return state.mergeDeep(addLocaleToState(state, action.payload));
@@ -120,7 +120,7 @@ const initialMeta = Immutable.fromJS({
 
 const meta = (state = initialMeta, action) => {
   switch (action.type) {
-    case IpcChannels.OPEN_DIRECTORY_RESULT:
+    case IpcChannels.OPEN_DIRECTORY_DIALOG_RESULT:
       return state.merge(Immutable.fromJS(action.payload.meta));
     case ActionTypes.LOCALE_ADD:
     case ActionTypes.LOCALE_REMOVE:

@@ -1,11 +1,11 @@
-import path from 'path';
-
 import { dialog } from 'electron';
 import jsonfile from 'jsonfile';
 
 import glob from 'glob';
 import _map from 'lodash/map';
 import _keys from 'lodash/keys';
+
+import path from 'path';
 
 import { IpcChannels } from '../common/consts/dialogs';
 
@@ -35,7 +35,7 @@ export const openDirectory = ({ mainWindow, event }) => {
           );
           return memo;
         }, initialMemo);
-        event.sender.send(IpcChannels.OPEN_DIRECTORY_RESULT, data);
+        event.sender.send(IpcChannels.OPEN_DIRECTORY_DIALOG_RESULT, data);
       }
     }
   );
