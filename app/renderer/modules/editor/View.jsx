@@ -11,11 +11,12 @@ import CloseIcon from 'material-ui/svg-icons/navigation/close';
 
 import { AddItem } from 'renderer/components';
 import { IpcChannels } from 'common/consts/dialogs';
-import { allSaved, addLocale, getModules } from 'renderer/reducers/modules';
+
+import { allSaved, addLocale, getData, getMeta } from './model';
 // import ModulesList from './ModulesList';
 // import Search from './Search';
 
-class HomeView extends React.PureComponent {
+class EditorView extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -26,7 +27,7 @@ class HomeView extends React.PureComponent {
 
   closeView = () => {
     const { history } = this.props;
-    history.push('/');
+    history.push('/welcome');
   };
 
   hideAddItem = () => this.setState({ showAddItem: false });
@@ -39,25 +40,25 @@ class HomeView extends React.PureComponent {
   };
 
   onSaveModule = (name, data) => {
-    const { modules } = this.props;
-    const cwd = modules.getIn(['meta', 'cwd']);
+    const { meta } = this.props;
+    const cwd = meta.get('cwd');
     ipcRenderer.send(IpcChannels.SAVE_MODULE, cwd, name, data);
   };
 
   saveAllChangedFiles = () => {
-    const { modules } = this.props;
-    const changed = modules.getIn(['meta', 'changed']);
+    const { data, meta } = this.props;
+    const changed = meta.get('changed');
     changed.map(moduleName =>
-      this.onSaveModule(moduleName, modules.getIn(['data', moduleName]).toJS())
+      this.onSaveModule(moduleName, data.get(moduleName).toJS())
     );
     this.props.allSaved();
   };
 
   render() {
-    const { modules } = this.props;
+    const { data, meta } = this.props;
     const { showAddItem } = this.state;
-    const dataLoaded = !modules.get('data').isEmpty();
-    const changed = !modules.getIn(['meta', 'changed']).isEmpty();
+    const dataLoaded = !data.isEmpty();
+    const changed = !meta.get('changed').isEmpty();
     return (
       <div className="items-container">
         <div className="buttons">
@@ -92,19 +93,21 @@ class HomeView extends React.PureComponent {
   }
 }
 
-HomeView.propTypes = {
+EditorView.propTypes = {
+  data: ImmutablePropTypes.map.isRequired,
   history: PropTypes.object.isRequired,
-  modules: ImmutablePropTypes.map.isRequired,
+  meta: ImmutablePropTypes.map.isRequired,
 
   addLocale: PropTypes.func.isRequired,
   allSaved: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
-  modules: getModules(state)
+  data: getData(state),
+  meta: getMeta(state)
 });
 
 export default connect(mapStateToProps, {
   allSaved,
   addLocale
-})(HomeView);
+})(EditorView);

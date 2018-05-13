@@ -2,9 +2,16 @@ import { combineReducers } from 'redux-immutable';
 import Immutable from 'immutable';
 import _keys from 'lodash/keys';
 
-import { createAction } from '../utils/actions';
-import { IpcChannels } from '../../common/consts/dialogs';
-import ActionTypes from '../actions/modules';
+import { enumerable } from 'common/utils/object';
+import { createAction } from 'renderer/utils/actions';
+import { IpcChannels } from 'common/consts/dialogs';
+
+const ActionTypes = enumerable(
+  'LOCALE_ADD',
+  'LOCALE_REMOVE',
+  'LOCALE_ALL_SAVED',
+  'LOCALE_UPDATE'
+);
 
 export const addLocale = (name, key, value) =>
   createAction(ActionTypes.LOCALE_ADD, { name, key, value });
@@ -13,11 +20,10 @@ export const removeLocale = (name, key) =>
 export const updateLocale = params =>
   createAction(ActionTypes.LOCALE_UPDATE, { ...params });
 export const allSaved = () => createAction(ActionTypes.LOCALE_ALL_SAVED);
-export const directoryOpened = data =>
-  createAction(IpcChannels.OPEN_DIRECTORY_DIALOG_RESULT, data);
 
-export const getModules = state => state.get('modules');
-export const getModulesData = state => getModules(state).get('data');
+const getEditor = state => state.get('editor');
+export const getData = state => getEditor(state).get('data');
+export const getMeta = state => getEditor(state).get('meta');
 
 const addLocaleToState = (state, { name, key, value }) => {
   const languages = _keys(state.get(name).toJS());

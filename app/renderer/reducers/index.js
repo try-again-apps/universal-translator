@@ -1,11 +1,13 @@
 import { combineReducers } from 'redux-immutable';
 
+import editor from '../modules/editor/model';
 import router from './routerReducer';
-import modules from './modules';
+import settings from '../modules/settings/model';
 
 const rootReducer = combineReducers({
-  modules,
-  router
+  editor,
+  router,
+  settings
 });
 
 export default rootReducer;

@@ -10,7 +10,8 @@ import { Link } from 'react-router-dom';
 import LinearProgress from 'material-ui/LinearProgress';
 
 import { IpcChannels } from 'common/consts/dialogs';
-import { directoryOpened } from 'renderer/reducers/modules';
+
+import { directoryOpened } from './model';
 
 import { version } from '../../../../package.json';
 
@@ -40,7 +41,7 @@ class WelcomeView extends React.PureComponent {
     this.props.directoryOpened(data);
     setTimeout(() => {
       this.setState({ busy: false });
-      history.push('/home');
+      history.push('/editor');
     }, 1500);
   };
 

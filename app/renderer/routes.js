@@ -1,14 +1,15 @@
 import React from 'react';
-import { Switch, Route } from 'react-router';
+import { Redirect, Route, Switch } from 'react-router';
 
-import HomeView from './modules/home/View';
+import EditorView from './modules/editor/View';
 import SettingsView from './modules/settings/View';
 import WelcomeView from './modules/welcome/View';
 
 export default () => (
   <Switch>
     <Route path="/settings" component={SettingsView} />
-    <Route path="/home" component={HomeView} />
-    <Route path="/" component={WelcomeView} />
+    <Route path="/welcome" component={WelcomeView} />
+    <Route path="/editor" component={EditorView} />
+    <Redirect from="/" to="/welcome" />
   </Switch>
 );
