@@ -9,7 +9,7 @@
  *
  * @flow
  */
-import { app, BrowserWindow, ipcMain } from 'electron';
+import { app, BrowserWindow, ipcMain, Menu } from 'electron';
 
 import { IpcChannels } from './common/consts/dialogs';
 import { openDirectory, saveModule } from './main/dialogs';
@@ -89,6 +89,29 @@ app.on('ready', async () => {
 
   mainWindow.on('closed', () => {
     mainWindow = null;
+  });
+
+  const selectionMenu = Menu.buildFromTemplate([
+    { role: 'copy' },
+    { type: 'separator' },
+    { role: 'selectall' }
+  ]);
+
+  const inputMenu = Menu.buildFromTemplate([
+    { role: 'cut' },
+    { role: 'copy' },
+    { role: 'paste' },
+    { type: 'separator' },
+    { role: 'selectall' }
+  ]);
+
+  mainWindow.webContents.on('context-menu', (e, props) => {
+    const { selectionText, isEditable } = props;
+    if (isEditable) {
+      inputMenu.popup();
+    } else if (selectionText && selectionText.trim() !== '') {
+      selectionMenu.popup();
+    }
   });
 
   const menuBuilder = new MenuBuilder(mainWindow);
