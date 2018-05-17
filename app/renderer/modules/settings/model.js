@@ -4,12 +4,17 @@ import { combineReducers } from 'redux-immutable';
 import { enumerable } from 'common/utils/object';
 import { createAction } from 'renderer/utils/actions';
 
-const ActionTypes = enumerable('SETTINGS_RECENT_FOLDERS_UPDATE');
+const ActionTypes = enumerable(
+  'SETTINGS_RECENT_FOLDERS_UPDATE',
+  'SETTINGS_UPDATE'
+);
 
 export const updateRecentFolders = data =>
   createAction(ActionTypes.SETTINGS_RECENT_FOLDERS_UPDATE, {
     recentDirectories: data
   });
+export const updateSettings = data =>
+  createAction(ActionTypes.SETTINGS_UPDATE, { data });
 
 const getSettings = state => state.get('settings');
 export const getRecentFolders = state =>
@@ -17,8 +22,11 @@ export const getRecentFolders = state =>
 
 const recentFolders = (state = Immutable.List(), action) => {
   switch (action.type) {
+    case ActionTypes.SETTINGS_UPDATE: {
+      const { recentlyOpened } = action.payload.data;
+      return Immutable.fromJS(recentlyOpened);
+    }
     case ActionTypes.SETTINGS_RECENT_FOLDERS_UPDATE:
-      console.info(action.payload.recentDirectories);
       return Immutable.fromJS(action.payload.recentDirectories);
     default:
       return state;

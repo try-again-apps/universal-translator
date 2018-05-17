@@ -8,7 +8,7 @@ import _keys from 'lodash/keys';
 import path from 'path';
 
 import { IpcChannels } from '../common/consts/dialogs';
-import { addRecentDirectory, recentDirectories } from './settings';
+import { addRecentDirectory } from './settings';
 
 const getFolderContent = folder => {
   const initialMemo = {
@@ -44,11 +44,7 @@ export const openDirectory = ({ mainWindow, folder, event }) => {
       directory => {
         if (directory) {
           const data = getFolderContent(directory[0]);
-          addRecentDirectory(directory[0]);
-          event.sender.send(
-            IpcChannels.SETTINGS_RECENT_DIRECTORIES,
-            recentDirectories()
-          );
+          addRecentDirectory(directory[0], event.sender);
           event.sender.send(IpcChannels.OPEN_DIRECTORY_DIALOG_RESULT, data);
         } else {
           event.sender.send(IpcChannels.OPEN_DIRECTORY_DIALOG_CANCEL);

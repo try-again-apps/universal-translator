@@ -1,5 +1,7 @@
 import settings from 'electron-settings';
 
+import { IpcChannels } from '../common/consts/dialogs';
+
 export const testSave = () => {
   settings.set('name', {
     first: 'Cosmo',
@@ -7,11 +9,11 @@ export const testSave = () => {
   });
 };
 
-export const testLoad = () => {
-  console.info(settings.get('name.first'));
+export const loadSettings = sender => {
+  sender.send(IpcChannels.SETTINGS_LOADED, settings.getAll());
 };
 
-export const addRecentDirectory = directory => {
+export const addRecentDirectory = (directory, sender) => {
   const recentlyOpened = settings.get('recentlyOpened') || [];
   if (!recentlyOpened.includes(directory)) {
     const newLength = recentlyOpened.unshift(directory);
@@ -19,6 +21,7 @@ export const addRecentDirectory = directory => {
       recentlyOpened.pop();
     }
     settings.set('recentlyOpened', recentlyOpened);
+    sender.send(IpcChannels.SETTINGS_RECENT_DIRECTORIES, recentlyOpened);
   }
 };
 

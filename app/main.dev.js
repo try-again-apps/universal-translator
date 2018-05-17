@@ -7,12 +7,12 @@
  * When running `npm run build` or `npm run build-main`, this file is compiled to
  * `./app/main.prod.js` using webpack. This gives us some performance wins.
  *
- * @flow
  */
 import { app, BrowserWindow, ipcMain, Menu } from 'electron';
 
 import { IpcChannels } from './common/consts/dialogs';
 import { openDirectory, saveModule } from './main/dialogs';
+import { loadSettings } from './main/settings';
 import MenuBuilder from './main/menu';
 
 let mainWindow = null;
@@ -85,6 +85,8 @@ app.on('ready', async () => {
     }
     mainWindow.show();
     mainWindow.focus();
+
+    loadSettings(mainWindow.webContents);
   });
 
   mainWindow.on('closed', () => {
