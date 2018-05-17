@@ -54,8 +54,8 @@ app.on('window-all-closed', () => {
   }
 });
 
-const openModalDirectory = event => {
-  openDirectory({ mainWindow, event });
+const openModalDirectory = (event, folder) => {
+  openDirectory({ mainWindow, folder, event });
 };
 
 ipcMain.on(IpcChannels.OPEN_DIRECTORY_DIALOG_REQUEST, openModalDirectory);
