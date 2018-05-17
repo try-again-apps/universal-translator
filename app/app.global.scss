@@ -15,3 +15,13 @@ body {
 #root {
   height: 100vh;
 }
+
+.close-button {
+  position: absolute;
+  right: 8px;
+  top: 8px;
+}
+
+.content {
+  padding: 8px;
+}

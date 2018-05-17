@@ -9,8 +9,9 @@ import AddBoxIcon from 'material-ui/svg-icons/content/add-box';
 import SaveIcon from 'material-ui/svg-icons/content/save';
 import CloseIcon from 'material-ui/svg-icons/navigation/close';
 
-import { AddItem } from 'renderer/components';
 import { IpcChannels } from 'common/consts/dialogs';
+
+import AddItem from './add-item/AddItem';
 
 import { allSaved, addLocale, getData, getMeta } from './model';
 // import ModulesList from './ModulesList';
@@ -21,7 +22,7 @@ class EditorView extends React.PureComponent {
     super(props);
     this.state = {
       //   moduleName: '',
-      showAddItem: false
+      showAddItem: true
     };
   }
 
@@ -60,23 +61,27 @@ class EditorView extends React.PureComponent {
     const dataLoaded = !data.isEmpty();
     const changed = !meta.get('changed').isEmpty();
     return (
-      <div className="items-container">
-        <div className="buttons">
-          <RaisedButton
-            disabled={!dataLoaded || !changed}
-            icon={<SaveIcon />}
-            label="Save Changes"
-            onClick={this.saveAllChangedFiles}
-          />
-          <RaisedButton
-            disabled={!dataLoaded}
-            icon={<AddBoxIcon />}
-            label="Add"
-            onClick={this.showAddItem}
-          />
+      <div className="content">
+        <div className="close-button">
           <IconButton onClick={this.closeView}>
             <CloseIcon />
           </IconButton>
+        </div>
+        <div className="items-container">
+          <div className="buttons">
+            <RaisedButton
+              disabled={!dataLoaded || !changed}
+              icon={<SaveIcon />}
+              label="Save Changes"
+              onClick={this.saveAllChangedFiles}
+            />
+            <RaisedButton
+              disabled={!dataLoaded}
+              icon={<AddBoxIcon />}
+              label="Add"
+              onClick={this.showAddItem}
+            />
+          </div>
         </div>
         {showAddItem && (
           <AddItem

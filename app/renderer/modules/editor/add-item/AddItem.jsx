@@ -45,15 +45,21 @@ class AddItem extends React.PureComponent {
     return (
       <div className="add-item">
         <TextField
+          floatingLabelFixed
+          floatingLabelText="Key"
+          fullWidth
+          hintText="Enter item key (no spaces are allowed)"
           id="key"
-          label="Key"
           value={this.state.key}
           onChange={this.handleChange('key')}
           margin="normal"
         />
         <TextField
+          floatingLabelFixed
+          floatingLabelText="Value"
+          fullWidth
+          hintText="Enter item text"
           id="value"
-          label="Value"
           value={this.state.value}
           onChange={this.handleChange('value')}
           margin="normal"

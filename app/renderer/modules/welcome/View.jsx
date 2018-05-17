@@ -42,7 +42,7 @@ class WelcomeView extends React.PureComponent {
     setTimeout(() => {
       this.setState({ busy: false });
       history.push('/editor');
-    }, 1500);
+    }, 500);
   };
 
   render() {
