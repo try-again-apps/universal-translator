@@ -1,0 +1,23 @@
+.search-component {
+  .form {
+    display: flex;
+    align-items: flex-end;
+
+    & > :not(:last-child) {
+      margin-right: 16px;
+    }
+
+    .text-field {
+      flex-grow: 1;
+    }
+
+    .clear-button {
+      padding-bottom: 8px;
+    }
+  }
+
+  .results-progress {
+    display: flex;
+    justify-content: center;
+  }
+}

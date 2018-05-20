@@ -2,22 +2,16 @@ import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { connect } from 'react-redux';
-import Menu, { MenuItem } from 'material-ui/Menu';
-import RaisedButton from 'material-ui/RaisedButton';
+import { MenuItem } from 'material-ui/Menu';
 import _keys from 'lodash/keys';
-import Popover from 'material-ui/Popover';
+import SelectField from 'material-ui/SelectField';
 
 import { getData } from '../model';
 
 class ModulePicker extends React.PureComponent {
-  constructor(props) {
-    super(props);
-    this.state = {
-      anchorEl: null,
-      open: false,
-      selectedIndex: 0
-    };
-  }
+  state = {
+    selectedIndex: 0
+  };
 
   componentWillMount() {
     const { defaultValue } = this.props;
@@ -27,29 +21,19 @@ class ModulePicker extends React.PureComponent {
     }
   }
 
-  onOpenMenu = event => {
-    event.preventDefault();
-    this.setState({
-      open: true,
-      anchorEl: event.currentTarget
-    });
-  };
-
-  onCloseMenu = () => this.setState({ anchorEl: null });
-
-  onMenuItemClick = index => () => {
-    this.setState({ anchorEl: null, open: false, selectedIndex: index });
-    this.props.onChange(this.modulesList()[index]);
-  };
-
   modulesList = () => {
     const { modules } = this.props;
     const data = modules.toJS();
     return _keys(data);
   };
 
+  handleChange = (event, index) => {
+    this.setState({ selectedIndex: index });
+    this.props.onChange(this.modulesList()[index]);
+  };
+
   render() {
-    const { anchorEl, open, selectedIndex } = this.state;
+    const { selectedIndex } = this.state;
     const modules = this.modulesList();
 
     if (modules.length === 0) {
@@ -58,28 +42,16 @@ class ModulePicker extends React.PureComponent {
 
     return (
       <Fragment>
-        <RaisedButton
-          label={modules[selectedIndex]}
-          onClick={this.onOpenMenu}
-        />
-        <Popover
-          open={open}
-          anchorEl={anchorEl}
-          anchorOrigin={{ horizontal: 'middle', vertical: 'bottom' }}
-          targetOrigin={{ horizontal: 'middle', vertical: 'top' }}
-          onRequestClose={this.onCloseMenu}
+        <SelectField
+          floatingLabelText="Module"
+          fullWidth
+          value={selectedIndex}
+          onChange={this.handleChange}
         >
-          <Menu>
-            {modules.map((value, index) => (
-              <MenuItem
-                key={index}
-                primaryText={value}
-                selected={index === selectedIndex}
-                onClick={this.onMenuItemClick(index)}
-              />
-            ))}
-          </Menu>
-        </Popover>
+          {modules.map((value, index) => (
+            <MenuItem key={index} primaryText={value} value={index} />
+          ))}
+        </SelectField>
       </Fragment>
     );
   }

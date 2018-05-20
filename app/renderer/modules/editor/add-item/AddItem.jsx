@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import TextField from 'material-ui/TextField';
-import IconButton from 'material-ui/IconButton';
 import AddIcon from 'material-ui-icons/Add';
 import CloseIcon from 'material-ui-icons/Close';
 import _trim from 'lodash/trim';
+import RaisedButton from 'material-ui/RaisedButton';
 
 import ModulePicker from '../module-picker/ModulePicker';
 
@@ -44,6 +44,10 @@ class AddItem extends React.PureComponent {
 
     return (
       <div className="add-item">
+        <ModulePicker
+          onChange={this.onModuleChanged}
+          defaultValue={defaultModule}
+        />
         <TextField
           floatingLabelFixed
           floatingLabelText="Key"
@@ -64,16 +68,19 @@ class AddItem extends React.PureComponent {
           onChange={this.handleChange('value')}
           margin="normal"
         />
-        <ModulePicker
-          onChange={this.onModuleChanged}
-          defaultValue={defaultModule}
-        />
-        <IconButton onClick={onCancel}>
-          <CloseIcon />
-        </IconButton>
-        <IconButton onClick={this.onAddClicked} disabled={!valid}>
-          <AddIcon />
-        </IconButton>
+        <div className="buttons">
+          <RaisedButton
+            onClick={onCancel}
+            icon={<CloseIcon />}
+            label="Cancel"
+          />
+          <RaisedButton
+            onClick={this.onAddClicked}
+            disabled={!valid}
+            icon={<AddIcon />}
+            label="Add"
+          />
+        </div>
       </div>
     );
   }

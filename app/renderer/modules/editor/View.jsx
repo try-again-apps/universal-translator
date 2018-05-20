@@ -14,15 +14,14 @@ import { IpcChannels } from 'common/consts/dialogs';
 import AddItem from './add-item/AddItem';
 
 import { allSaved, addLocale, getData, getMeta } from './model';
-// import ModulesList from './ModulesList';
-// import Search from './Search';
+import Search from './search/Search';
 
 class EditorView extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      //   moduleName: '',
-      showAddItem: true
+      moduleName: '',
+      showAddItem: false
     };
   }
 
@@ -36,7 +35,7 @@ class EditorView extends React.PureComponent {
 
   onAddItem = ({ name, key, value }) => {
     this.props.addLocale(name, key, value);
-    // this.setState({ moduleName: name });
+    this.setState({ moduleName: name });
     this.hideAddItem();
   };
 
@@ -90,9 +89,7 @@ class EditorView extends React.PureComponent {
             defaultModule={this.state.moduleName}
           />
         )}
-        {/* <Search />
-        <ModulesList /> */}
-        {/* <ModuleViewer languages={['en', 'pl']} title="test" files={files.toJS()} /> */}
+        <Search />
       </div>
     );
   }

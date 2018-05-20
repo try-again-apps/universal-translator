@@ -65,10 +65,10 @@ class WelcomeView extends React.PureComponent {
   directoryOpened = (event, data) => {
     const { history } = this.props;
     this.props.directoryOpened(data);
-    setTimeout(() => {
-      this.setState({ busy: false });
-      history.push('/editor');
-    }, 500);
+    // setTimeout(() => {
+    this.setState({ busy: false });
+    history.push('/editor');
+    // }, 500);
   };
 
   handleClick = event => {
