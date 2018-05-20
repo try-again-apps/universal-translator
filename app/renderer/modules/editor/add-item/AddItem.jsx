@@ -6,7 +6,7 @@ import AddIcon from 'material-ui-icons/Add';
 import CloseIcon from 'material-ui-icons/Close';
 import _trim from 'lodash/trim';
 
-// import ModulePicker from './ModulePicker';
+import ModulePicker from '../module-picker/ModulePicker';
 
 class AddItem extends React.PureComponent {
   constructor(props) {
@@ -64,7 +64,10 @@ class AddItem extends React.PureComponent {
           onChange={this.handleChange('value')}
           margin="normal"
         />
-        {/* <ModulePicker onChange={this.onModuleChanged} defaultValue={defaultModule} /> */}
+        <ModulePicker
+          onChange={this.onModuleChanged}
+          defaultValue={defaultModule}
+        />
         <IconButton onClick={onCancel}>
           <CloseIcon />
         </IconButton>

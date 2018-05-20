@@ -2,13 +2,6 @@ import settings from 'electron-settings';
 
 import { IpcChannels } from '../common/consts/dialogs';
 
-export const testSave = () => {
-  settings.set('name', {
-    first: 'Cosmo',
-    last: 'Kramer'
-  });
-};
-
 export const loadSettings = sender => {
   sender.send(IpcChannels.SETTINGS_LOADED, settings.getAll());
 };
