@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { ipcRenderer } from 'electron';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
 
 import { IpcChannels } from 'common/consts/dialogs';
 
@@ -47,4 +48,6 @@ App.propTypes = {
   updateSettings: PropTypes.func.isRequired
 };
 
-export default connect(null, { updateRecentFolders, updateSettings })(App);
+export default withRouter(
+  connect(null, { updateRecentFolders, updateSettings })(App)
+);
