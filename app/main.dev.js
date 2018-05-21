@@ -116,6 +116,8 @@ app.on('ready', async () => {
     }
   });
 
+  // mainWindow.webContents.openDevTools();
+
   const menuBuilder = new MenuBuilder(mainWindow);
   menuBuilder.buildMenu();
 });

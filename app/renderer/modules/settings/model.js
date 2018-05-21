@@ -24,7 +24,7 @@ const recentFolders = (state = Immutable.List(), action) => {
   switch (action.type) {
     case ActionTypes.SETTINGS_UPDATE: {
       const { recentlyOpened } = action.payload.data;
-      return Immutable.fromJS(recentlyOpened);
+      return Immutable.fromJS(recentlyOpened) || state;
     }
     case ActionTypes.SETTINGS_RECENT_FOLDERS_UPDATE:
       return Immutable.fromJS(action.payload.recentDirectories);
