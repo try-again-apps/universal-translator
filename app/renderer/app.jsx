@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { ipcRenderer } from 'electron';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
+import Snackbar from 'material-ui/Snackbar';
 
 import { IpcChannels } from 'common/consts/dialogs';
 
@@ -37,7 +38,17 @@ class App extends React.PureComponent {
   };
 
   render() {
-    return <div>{this.props.children}</div>;
+    return (
+      <div>
+        {this.props.children}
+        <Snackbar
+          open
+          message="Event added to your calendar"
+          autoHideDuration={4000}
+          onRequestClose={this.handleRequestClose}
+        />
+      </div>
+    );
   }
 }
 
